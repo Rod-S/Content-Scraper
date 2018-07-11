@@ -1,0 +1,24 @@
+{
+  "name": "unit-6---content-scraper",
+  "version": "1.0.0",
+  "description": "content scraper and csv utility application",
+  "main": "scraper.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Rod-S/Unit-6---Content-Scraper.git"
+  },
+  "author": "Rod-S",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Rod-S/Unit-6---Content-Scraper/issues"
+  },
+  "homepage": "https://github.com/Rod-S/Unit-6---Content-Scraper#readme",
+  "dependencies": {
+    "crawler": "^1.1.4",
+    "json2csv": "^4.1.5"
+  },
+  "devDependencies": {}
+}
