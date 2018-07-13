@@ -1,7 +1,9 @@
 var Crawler = require("crawler");
+var cheerio = require('cheerio');
+var fs = require('fs');
 
 var c = new Crawler({
-    maxConnections : 1,
+    maxConnections : 10,
     // This will be called for each crawled page
     callback : function (error, res, done) {
         if(error){
@@ -18,8 +20,8 @@ var c = new Crawler({
 
 // Queue URLs with custom callbacks & parameters
 c.queue([{
-    uri: 'http://shirtsformike.com',
-
+    uri: 'http://shirts4mike.com/shirts.php?id=101',
+    jQuery: true,
 
     // The global callback won't be called
     callback: function (error, res, done) {
@@ -27,7 +29,13 @@ c.queue([{
             console.log(error);
         }else{
             console.log('Grabbed', res.body.length, 'bytes');
-            console.log(res.body);
+            const html = res.body;
+            console.log(html);
+            fs.writeFile('html.html',
+              html, function success(){
+                console.log('file write success');
+              });
+              
         }
         done();
     }
