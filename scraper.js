@@ -28,8 +28,8 @@ const getContent = function(url) {
     })
 };
 
-if (!fs.existsSync('./data')) {
-  fs.mkDir
+if (fs.exists('./data') == false) {
+  fs.mkdirSync('./data');
 }
 
 //Begin scraping http://shirts4mike.com/shirts.php
@@ -65,8 +65,8 @@ getContent(url)
 
           const json2csvParser = new Json2csvParser({ fields });
           let csv = json2csvParser.parse(shirtValues);
-          fs.createWriteStream('csv.csv', csv, function(err) {
-            if (err) throw err;
+          fs.writeFile('/data/csv.csv', csv, function(err) {
+
             console.log('file saved');
           });
 
@@ -78,4 +78,4 @@ getContent(url)
           //console.log('urlShirt: '+urlShirt);
         }
       )};
-  }).catch((err) => console.error(err));
+  }).catch((err) => console.error('There was an error: ' + err));
