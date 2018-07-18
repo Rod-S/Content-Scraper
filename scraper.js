@@ -1,11 +1,12 @@
 const cheerio = require("cheerio");
-const Json2csvParser = require('json2csv').Parser;
-const fs = require('fs');
+const Json2csvParser = require("json2csv").Parser;
+const fs = require("fs");
 
 const site = "http://shirts4mike.com/";
 const url = "http://shirts4mike.com/shirts.php";
 
-
+/*getContent function replacing NPM request module dependency to lessen dependency bloat
+  credit: Provided by Tomas Dvorak, https://www.tomas-dvorak.cz/posts/nodejs-request-without-dependencies */
 const getContent = function(url) {
   // return new pending promise
   return new Promise((resolve, reject) => {
@@ -42,13 +43,12 @@ getContent(url)
     $('.products li a').each(function(i, elem){
       shirts.push(site + elem.attribs.href);
     });
-
     //format and creation of csv file
     var date = new Date();
     var dateFormat = date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate();
     const fields = ['Title', 'Price', 'ImageURL', 'URL', 'Time'];
-    var stream = fs.createWriteStream("./data/" + dateFormat + ".csv");
-    const json2csvParser = new Json2csvParser({fields, header: true});
+    const stream = fs.createWriteStream("./data/" + dateFormat + ".csv");
+    const json2csvParser = new Json2csvParser({fields});
     stream.write('"Title","Price","ImageURL","URL","Time"');
     //loop through each url in shirts array
     for (let i=0; i < shirts.length; i++) {
@@ -72,12 +72,11 @@ getContent(url)
               "Time": date
             }
           ];
-          //format header fields and append desired values into csv file
-          //const fields = ['Title', 'Price', 'ImageURL', 'URL', 'Time'];
-          //const json2csvParser = new Json2csvParser({fields, header: true});
+          //append desired values into csv file
           let csv = json2csvParser.parse(shirtValues);
+          //remove duplication of headers within loop
           let noheaderCSV = csv.replace(/"title","Price","ImageURL","URL","Time"/i, '');
-          //setInterval(function() {stream.write(noheaderCSV);}, 5000);
+          //write data to csv file
           stream.write(noheaderCSV);
 
           //test logs
