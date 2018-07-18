@@ -28,54 +28,66 @@ const getContent = function(url) {
     })
 };
 
-if (fs.exists('./data') == false) {
+//create data folder if it does not exist
+if (!fs.existsSync('./data')) {
   fs.mkdirSync('./data');
 }
 
-//Begin scraping http://shirts4mike.com/shirts.php
+//Begin scraping http://shirts4mike.com/shirts.php, load html through cheerio
 getContent(url)
   .then(function(html) {
-
-
-
     var shirts = [];
     var $ = cheerio.load(html);
+    //push all shirt urls on page into shirts array
     $('.products li a').each(function(i, elem){
       shirts.push(site + elem.attribs.href);
     });
+
+    //format and creation of csv file
+    var date = new Date();
+    var dateFormat = date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate();
+    const fields = ['Title', 'Price', 'ImageURL', 'URL', 'Time'];
+    var stream = fs.createWriteStream("./data/" + dateFormat + ".csv");
+    const json2csvParser = new Json2csvParser({fields, header: true});
+    stream.write('"Title","Price","ImageURL","URL","Time"');
+    //loop through each url in shirts array
     for (let i=0; i < shirts.length; i++) {
+      //scrape each shirt url page, load html through cheerio
       getContent(shirts[i])
         .then(function(html) {
           var $ = cheerio.load(html);
+
+          //store desired values
           var titleShirt = $('.shirt-picture span img').attr('alt');
           var priceShirt = $('.price').text();
           var imageUrlShirt = $('.shirt-picture span img').attr('src');
           var urlShirt = shirts[i];
-
-          const fields = ['Title', 'Price', 'ImageURL', 'URL', 'Time'];
+          var date = new Date();
           let shirtValues = [
             {
               "Title": titleShirt,
               "Price": priceShirt,
               "ImageURL": imageUrlShirt,
               "URL": urlShirt,
-              "Time": "Time"
+              "Time": date
             }
           ];
-
-          const json2csvParser = new Json2csvParser({ fields });
+          //format header fields and append desired values into csv file
+          //const fields = ['Title', 'Price', 'ImageURL', 'URL', 'Time'];
+          //const json2csvParser = new Json2csvParser({fields, header: true});
           let csv = json2csvParser.parse(shirtValues);
-          fs.writeFile('/data/csv.csv', csv, function(err) {
+          let noheaderCSV = csv.replace(/"title","Price","ImageURL","URL","Time"/i, '');
+          //setInterval(function() {stream.write(noheaderCSV);}, 5000);
+          stream.write(noheaderCSV);
 
-            console.log('file saved');
-          });
-
-
+          //test logs
+          //console.log(noheaderCSV);
           //console.log(html);
           //console.log('titleShirt: ' + titleShirt);
           //console.log('priceShirt: ' +priceShirt);
           //console.log('imageUrlShirt: '+imageUrlShirt);
           //console.log('urlShirt: '+urlShirt);
+          //console.log(shirtValues);
         }
-      )};
+      ).catch((err) => console.error('There was an error: ' + err));};
   }).catch((err) => console.error('There was an error: ' + err));
