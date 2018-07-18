@@ -80,13 +80,12 @@ getContent(url)
           stream.write(noheaderCSV);
 
           //test logs
-          //console.log(noheaderCSV);
-          //console.log(html);
-          //console.log('titleShirt: ' + titleShirt);
-          //console.log('priceShirt: ' +priceShirt);
-          //console.log('imageUrlShirt: '+imageUrlShirt);
-          //console.log('urlShirt: '+urlShirt);
-          //console.log(shirtValues);
-        }
-      ).catch((err) => console.error('There was an error: ' + err));};
+            //console.log(noheaderCSV);
+            //console.log(html);
+            //console.log('titleShirt: ' + titleShirt);
+            //console.log('priceShirt: ' +priceShirt);
+            //console.log('imageUrlShirt: '+imageUrlShirt);
+            //console.log('urlShirt: '+urlShirt);
+            //console.log(shirtValues);
+        }).catch((err) => console.error('There was an error: ' + err));}
   }).catch((err) => console.error('There was an error: ' + err));
