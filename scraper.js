@@ -17,7 +17,7 @@ const getContent = function(url) {
       if (response.statusCode < 200 || response.statusCode > 299) {
          reject(new Error('Failed to load page, status code: ' + response.statusCode));
          //log error to console and log file
-         if (error) {
+         if (err) {
          let error = 'There was an error: "' + err.code + " (" + err.syscall + ")" + '" while trying to connect to ' + err.hostname;
          const errorFile = fs.createWriteStream("scraper-error.log");
          errorFile.write('[' + new Date() + ']' + ' <' + error + '>');
@@ -91,7 +91,7 @@ getContent(url)
           if (i==shirts.length-1) {console.log('Successfully appended all data to csv file.')}
         }).catch((err) => {
           //log error to console and log file
-          if (error) {
+          if (err) {
           let error = 'There was an error: "' + err.code + " (" + err.syscall + ")" + '" while trying to connect to ' + err.hostname;
           const errorFile = fs.createWriteStream("scraper-error.log");
           errorFile.write('[' + new Date() + ']' + ' <' + error + '>');
@@ -101,7 +101,7 @@ getContent(url)
     }
   }).catch((err) => {
     //log error to console and log file
-    if (error) {
+    if (err) {
     let error = 'There was an error: "' + err.code + " (" + err.syscall + ")" + '" while trying to connect to ' + err.hostname;
     const errorFile = fs.createWriteStream("scraper-error.log");
     errorFile.write('[' + new Date() + ']' + ' <' + error + '>');
