@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "description": "content scraper and csv utility application",
   "main": "scraper.js",
-  "scripts": { "start": "node scraper.js"
+  "scripts": {
+    "start": "node scraper.js"
   },
   "repository": {
     "type": "git",
