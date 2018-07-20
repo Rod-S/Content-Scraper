@@ -15,15 +15,15 @@ const getContent = function(url) {
     const request = lib.get(url, (response) => {
       // handle http errors
       if (response.statusCode < 200 || response.statusCode > 299) {
-         reject(new Error('Failed to load page, status code: ' + response.statusCode));
-         //log error to console and log file
-         if (err) {
-         let error = 'There was an error: "' + err.code + " (" + err.syscall + ")" + '" while trying to connect to ' + err.hostname;
-         const errorFile = fs.createWriteStream("scraper-error.log");
-         errorFile.write('[' + new Date() + ']' + ' <' + error + '>');
-         console.log(error);
-       }
-       }
+        reject(new Error('Failed to load page, status code: ' + response.statusCode));
+        //log error to console and log file
+        if (err) {
+          let error = 'There was an error: "' + err.code + " (" + err.syscall + ")" + '" while trying to connect to ' + err.hostname;
+          const errorFile = fs.createWriteStream("scraper-error.log");
+          errorFile.write('[' + new Date() + ']' + ' <' + error + '>');
+          console.log(error);
+        }
+      }
       // temporary data holder
       const body = [];
       // on every content chunk, push it to the data array
@@ -33,8 +33,10 @@ const getContent = function(url) {
     });
 
     // handle connection errors of the request
-    request.on('error', (err) => reject(err))
+    request.on('error', (err) => {
+      reject(err)
     })
+  })
 };
 
 //create data folder if it does not exist
@@ -92,19 +94,19 @@ getContent(url)
         }).catch((err) => {
           //log error to console and log file
           if (err) {
-          let error = 'There was an error: "' + err.code + " (" + err.syscall + ")" + '" while trying to connect to ' + err.hostname;
-          const errorFile = fs.createWriteStream("scraper-error.log");
-          errorFile.write('[' + new Date() + ']' + ' <' + error + '>');
-          console.log(error);
-        }
+            let error = 'There was an error: "' + err.code + " (" + err.syscall + ")" + '" while trying to connect to ' + err.hostname;
+            const errorFile = fs.createWriteStream("scraper-error.log");
+            errorFile.write('[' + new Date() + ']' + ' <' + error + '>');
+            console.log(error);
+          }
       });
     }
   }).catch((err) => {
     //log error to console and log file
     if (err) {
-    let error = 'There was an error: "' + err.code + " (" + err.syscall + ")" + '" while trying to connect to ' + err.hostname;
-    const errorFile = fs.createWriteStream("scraper-error.log");
-    errorFile.write('[' + new Date() + ']' + ' <' + error + '>');
-    console.log(error);
-  }
+      let error = 'There was an error: "' + err.code + " (" + err.syscall + ")" + '" while trying to connect to ' + err.hostname;
+      const errorFile = fs.createWriteStream("scraper-error.log");
+      errorFile.write('[' + new Date() + ']' + ' <' + error + '>');
+      console.log(error);
+    }
 });
