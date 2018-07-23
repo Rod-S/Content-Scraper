@@ -39,6 +39,9 @@ const getContent = function(url) {
   })
 };
 
+//start message
+console.log('Executing scraper.js');
+
 //create data folder if it does not exist
 if (!fs.existsSync('./data')) {
   fs.mkdirSync('./data');
@@ -55,9 +58,16 @@ getContent(url)
       shirts.push(site + elem.attribs.href);
     });
     //format and creation of csv file
-    var date = new Date();
-    var dateFormat = date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate();
-    var csvFileName = "./data/" + dateFormat + ".csv";
+    function formatDate() {
+    var date = new Date(),
+        month = '' + (date.getMonth() + 1),
+        day = '' + date.getDate(),
+        year = date.getFullYear();
+    if (month.length < 2) month = '0' + month;
+    if (day.length < 2) day = '0' + day;
+    return [year, month, day].join('-');
+}
+    var csvFileName = "./data/" + formatDate() + ".csv";
     const fields = ['Title', 'Price', 'ImageURL', 'URL', 'Time'];
     const stream = fs.createWriteStream(csvFileName);
     const json2csvParser = new Json2csvParser({fields});
