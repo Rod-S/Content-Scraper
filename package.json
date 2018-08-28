@@ -2,6 +2,10 @@
   "name": "unit-6---content-scraper",
   "version": "1.0.0",
   "description": "content scraper and csv utility application",
+  "engines": {
+    "node": "8.11.3",
+    "npm": "6.4.0"
+  },
   "main": "scraper.js",
   "scripts": {
     "start": "node scraper.js"
