@@ -1,8 +1,8 @@
 const cheerio = require("cheerio");
 const Json2csvParser = require("json2csv").Parser;
 const fs = require("fs");
-const site = "http://shirts4mike.com/";
-const url = "http://shirts4mike.com/shirts.php";
+const site = "https://shirts4mike.com/";
+const url = "https://shirts4mike.com/shirts.php";
 
 
 /*getContent function replacing NPM request module dependency to lessen dependency bloat
